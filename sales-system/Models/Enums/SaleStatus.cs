@@ -4,6 +4,6 @@
     {
         Peding = 0,
         Billed = 1,
-        Canceleld = 2,
+        Canceled = 2,
     }
 }

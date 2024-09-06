@@ -53,9 +53,6 @@ namespace sales_system.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
-
                     b.Property<int>("SellerId")
                         .HasColumnType("int");
 
@@ -63,8 +60,6 @@ namespace sales_system.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DepartmentId");
 
                     b.HasIndex("SellerId");
 
@@ -85,7 +80,7 @@ namespace sales_system.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int?>("DepartmentId")
+                    b.Property<int>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
@@ -105,28 +100,24 @@ namespace sales_system.Migrations
 
             modelBuilder.Entity("sales_system.Models.SalesRecord", b =>
                 {
-                    b.HasOne("sales_system.Models.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("sales_system.Models.Seller", "Seller")
                         .WithMany("Sales")
                         .HasForeignKey("SellerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Department");
-
                     b.Navigation("Seller");
                 });
 
             modelBuilder.Entity("sales_system.Models.Seller", b =>
                 {
-                    b.HasOne("sales_system.Models.Department", null)
+                    b.HasOne("sales_system.Models.Department", "Department")
                         .WithMany("Sellers")
-                        .HasForeignKey("DepartmentId");
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
                 });
 
             modelBuilder.Entity("sales_system.Models.Department", b =>
