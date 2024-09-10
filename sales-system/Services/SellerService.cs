@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using sales_system.Data;
 using sales_system.Models;
+using sales_system.Services.Exceptions;
 using System.Runtime.Remoting;
 
 namespace sales_system.Services
@@ -35,6 +36,23 @@ namespace sales_system.Services
             var obj = _context.Seller.Find(id);
             _context.Remove(obj);
             _context.SaveChanges();
+        }
+
+        public void Update(Seller seller)
+        {
+            if (!_context.Seller.Any(x => x.Id == seller.Id))
+            {
+                throw new NotFoundException("ID not found");
+            }
+            try
+            {
+                _context.Update(seller);
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                throw new DbConcurrencyException(e.Message);
+            }
         }
     }
 }
